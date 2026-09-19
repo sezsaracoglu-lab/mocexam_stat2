@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology &amp; Statistics — Practice Exam II</title>
+<style>
+:root{
+  --bg:#141210; --bg-2:#1b1815; --card:#1e1b17; --card-2:#232019;
+  --line:#322c24; --line-2:#3d3529;
+  --gold:#c9a96e; --gold-2:#e0c68f; --gold-dim:#8d7645;
+  --ink:#ece5d8; --ink-2:#bdb3a1; --ink-3:#877e6e;
+  --ok:#6f9a63; --ok-bg:#1c2a18; --no:#b5635c; --no-bg:#2c1a18;
+  --serif:'Cormorant Garamond','Times New Roman','DejaVu Serif',Georgia,serif;
+  --sans:'DM Sans','Helvetica Neue',Arial,'DejaVu Sans',sans-serif;
+  --mono:'DM Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--sans);
+     font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased}
+
+/* ---------------------------------------------------- sticky header */
+header{
+  position:sticky; top:0; z-index:20; background:rgba(20,18,16,.96);
+  border-bottom:1px solid var(--line); backdrop-filter:blur(8px);
+}
+.hin{max-width:900px; margin:0 auto; padding:16px 22px;
+     display:flex; align-items:center; gap:20px; flex-wrap:wrap}
+.htitle{font-family:var(--serif); font-size:25px; font-weight:700; color:var(--gold-2);
+        line-height:1.1; margin:0}
+.hsub{font-size:9.6px; letter-spacing:.17em; text-transform:uppercase;
+      color:var(--ink-3); margin-top:5px}
+.stats{margin-left:auto; display:flex; gap:20px}
+.stat{text-align:right}
+.stat .sl{font-size:8.8px; letter-spacing:.17em; text-transform:uppercase; color:var(--ink-3)}
+.stat .sv{font-family:var(--serif); font-size:23px; font-weight:700; color:var(--gold); line-height:1.2}
+.stat .sv.dim{color:var(--ink-2)}
+
+.wrap{max-width:900px; margin:0 auto; padding:30px 22px 90px}
+
+.intro{color:var(--ink-2); font-size:14.4px; line-height:1.65; margin:0 0 6px; max-width:74ch}
+.intro b{color:var(--ink)}
+.bar{height:5px; background:var(--line); border-radius:99px; overflow:hidden; margin:20px 0 4px}
+.bar i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--gold-dim),var(--gold)); transition:width .3s ease}
+.barlab{font-size:10.4px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
+.tools{display:flex; gap:9px; flex-wrap:wrap; margin:18px 0 6px}
+.btn{font-family:var(--sans); font-size:12.2px; font-weight:600; color:var(--ink-2);
+     background:var(--card); border:1px solid var(--line-2); border-radius:8px;
+     padding:8px 14px; cursor:pointer; transition:all .13s ease}
+.btn:hover{border-color:var(--gold-dim); color:var(--gold-2)}
+.btn.on{background:var(--gold-dim); border-color:var(--gold-dim); color:#1a1610}
+
+/* ---------------------------------------------------- sections */
+.sec{margin:44px 0 18px}
+.sec .sn{font-size:9.6px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-dim); font-weight:700}
+.sec .st{font-family:var(--serif); font-size:27px; font-weight:700; color:var(--gold-2); margin-top:4px}
+.sec .sr{height:1px; background:var(--line); margin-top:13px}
+
+/* ---------------------------------------------------- question cards */
+.q{background:var(--card); border:1px solid var(--line); border-radius:12px;
+   padding:19px 21px 20px; margin-bottom:12px}
+.q.hide{display:none}
+.qh{display:flex; align-items:center; gap:10px; margin-bottom:11px}
+.qn{font-family:var(--mono); font-size:11px; color:var(--gold-dim); letter-spacing:.07em}
+.qtag{font-size:9px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3);
+      border:1px solid var(--line-2); border-radius:99px; padding:2px 9px}
+.qq{font-size:15px; color:var(--ink); line-height:1.6; margin-bottom:14px}
+.qq b{color:var(--gold-2)}
+.opts{display:flex; flex-direction:column; gap:8px}
+.opt{display:flex; gap:12px; align-items:flex-start; text-align:left; width:100%;
+     font-family:var(--sans); font-size:14px; color:var(--ink-2); line-height:1.5;
+     background:var(--card-2); border:1px solid var(--line); border-radius:9px;
+     padding:11px 14px; cursor:pointer; transition:all .12s ease}
+.opt:hover:not(:disabled){border-color:var(--gold-dim); color:var(--ink)}
+.opt:disabled{cursor:default}
+.opt .ol{font-family:var(--mono); font-size:11px; font-weight:700; color:var(--ink-3);
+         border:1px solid var(--line-2); border-radius:5px; min-width:21px; height:21px;
+         display:grid; place-items:center; flex:none}
+.opt.correct{background:var(--ok-bg); border-color:var(--ok); color:#d4e6cc}
+.opt.correct .ol{background:var(--ok); border-color:var(--ok); color:#0f1a0c}
+.opt.wrong{background:var(--no-bg); border-color:var(--no); color:#eccecb}
+.opt.wrong .ol{background:var(--no); border-color:var(--no); color:#2a0f0d}
+.expl{display:none; margin-top:14px; padding:13px 15px; border-radius:10px;
+      background:var(--bg-2); border:1px solid var(--line); border-left:3px solid var(--gold-dim);
+      font-size:13.4px; line-height:1.65; color:var(--ink-2)}
+.expl.show{display:block}
+.expl b{color:var(--gold-2)}
+.expl .el{font-size:9px; letter-spacing:.15em; text-transform:uppercase; color:var(--gold-dim);
+          font-weight:700; margin-bottom:6px}
+
+/* ---------------------------------------------------- result */
+.done{display:none; margin-top:26px; background:var(--card); border:1px solid var(--line-2);
+      border-left:4px solid var(--gold); border-radius:12px; padding:20px 22px}
+.done.show{display:block}
+.done .dt{font-family:var(--serif); font-size:34px; font-weight:700; color:var(--gold-2); line-height:1.1}
+.done .dd{color:var(--ink-2); font-size:13.6px; margin-top:6px}
+.done table{border-collapse:collapse; width:100%; margin-top:14px; font-size:13px}
+.done td{padding:6px 8px; border-top:1px solid var(--line); color:var(--ink-2)}
+.done td:last-child{text-align:right; font-family:var(--mono); font-size:12.4px; color:var(--gold-2)}
+
+footer{margin-top:50px; padding-top:18px; border-top:1px solid var(--line);
+       font-size:11.6px; color:var(--ink-3); line-height:1.7}
+
+@media (max-width:640px){
+  .hin{padding:13px 15px; gap:12px}
+  .htitle{font-size:20px}
+  .stats{margin-left:0; gap:16px}
+  .wrap{padding:22px 14px 60px}
+  .sec .st{font-size:22px}
+  .opt{font-size:13.4px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hin">
+    <div>
+      <h1 class="htitle">Methodology &amp; Statistics</h1>
+      <div class="hsub">Practice Exam II · Erasmus University Rotterdam · Themes 2–5</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="sl">Score</div><div class="sv" id="sc">0 / 0</div></div>
+      <div class="stat"><div class="sl">Remaining</div><div class="sv dim" id="rem">40</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<p class="intro">Forty new items on the same themes as the first paper — measurement and descriptives, the normal distribution, correlation and research design, probability, sampling distributions, hypothesis testing and confidence intervals. <b>Every answer opens an explanation</b>, so a wrong answer tells you why it was wrong. Work the arithmetic on paper before you click; the options are built from the mistakes people actually make, so a wrong route usually lands on one of them.</p>
+
+<div class="bar"><i id="bar"></i></div>
+<div class="barlab" id="barlab">Nothing answered yet</div>
+
+<div class="tools">
+  <button class="btn" id="btnWrong">Show only my mistakes</button>
+  <button class="btn" id="btnReset">↺ Start again</button>
+</div>
+
+<div id="list"></div>
+<div class="done" id="done"></div>
+
+<footer>
+  Written to match the format of the Themes 2–5 practice paper: seven sections, four options, one right answer.<br>
+  All forty items are new, and every numeric answer has been recomputed independently. Table A values are the ones in Moore, McCabe &amp; Craig.<br>
+  Check anything that matters against your own tables — and remember that the exam permits the formula sheet, the tables and a non-graphical calculator.
+</footer>
+
+</div>
+
+<script>
+/* ===========================================================================
+   Methodology & Statistics — Practice Exam II
+   Forty new items in the shape of the Themes 2-5 paper: seven sections, four
+   options each, one right answer. Every numeric answer has been recomputed.
+   =========================================================================== */
+var EXAM = [
+
+/* ---------------------------------------------------------------- SECTION I */
+{s:'I', n:'Q1',
+ q:'Participants are asked to rank their three favourite study methods first, second and third. What level of measurement is the resulting variable?',
+ o:['Ordinal','Nominal','Interval','Ratio'], a:0,
+ x:'The ranks have a meaningful <b>order</b>, but the gaps between them are not equal — the distance between 1st and 2nd need not match the distance between 2nd and 3rd. Order without equal spacing is exactly the definition of ordinal.'},
+
+{s:'I', n:'Q2',
+ q:'Eight students report how many hours they slept last night:<br><br><b>5 · 6 · 6 · 7 · 7 · 8 · 9 · 12</b><br><br>What is the interquartile range (IQR = Q3 − Q1)?',
+ o:['2.5','2.0','3.0','7.0'], a:0,
+ x:'With n = 8 the median splits the data into two halves of four. Lower half 5, 6, 6, 7 → <b>Q1 = 6</b>. Upper half 7, 8, 9, 12 → <b>Q3 = 8.5</b>. IQR = 8.5 − 6 = <b>2.5</b>. (7.0 is the median, not the IQR.)'},
+
+{s:'I', n:'Q3',
+ q:'A small practice employs six people. Four assistants each earn €30,000, one therapist earns €45,000 and the owner earns €150,000.<br><br>How many employees earn <em>more</em> than the mean salary?',
+ o:['1','2','3','4'], a:0,
+ x:'Total = 4(30,000) + 45,000 + 150,000 = €315,000, so the mean is 315,000 ÷ 6 = <b>€52,500</b>. Only the owner is above it. One extreme value has dragged the mean above five of the six salaries — which is precisely why the median (€30,000) is the honest summary here.'},
+
+{s:'I', n:'Q4',
+ q:'A set of scores has mean 20 and standard deviation 4. Every score is multiplied by 3, and then 10 is added to each result. What are the new mean and standard deviation?',
+ o:['70 and 12','70 and 22','30 and 12','70 and 4'], a:0,
+ x:'Multiplying stretches both: mean 3 × 20 = 60, SD 3 × 4 = 12. Adding 10 shifts the mean to <b>70</b> but leaves the spread untouched, because every score moves by the same amount. <b>Adding changes the centre only; multiplying changes both.</b>'},
+
+{s:'I', n:'Q5',
+ q:'A distribution of reaction times is strongly skewed to the right. Which statement is correct?',
+ o:['The mean is larger than the median, because the long right tail pulls the mean upwards',
+    'The median is larger than the mean, because the tail pulls the median upwards',
+    'The mean and the median are equal, because skew affects only the mode',
+    'The standard deviation must be zero'], a:0,
+ x:'The mean is the balance point, so it follows the tail; the median only counts positions and barely moves. In a right-skewed distribution the order is <b>mode &lt; median &lt; mean</b>. That is also why the median is reported for skewed data such as income or reaction times.'},
+
+{s:'I', n:'Q6',
+ q:'A questionnaire records: (1) postcode, (2) number of siblings, (3) favourite colour, (4) reaction time in milliseconds. Assuming there is variability on each, how many are <b>categorical</b> variables?',
+ o:['2','1','3','4'], a:0,
+ x:'<b>Postcode</b> and <b>favourite colour</b> are categorical — a postcode is a label, not a quantity, even though it is written with digits. Number of siblings and reaction time are quantitative. Being made of numbers is not what makes a variable quantitative; being a <em>count or a measurement</em> is.'},
+
+/* --------------------------------------------------------------- SECTION II */
+{s:'II', n:'Q7',
+ q:'Z follows a standard normal distribution. Find the value of z such that 90% of all observations fall <em>below</em> z.',
+ o:['1.28','1.04','1.65','2.33'], a:0,
+ x:'Search the body of Table A for the area closest to 0.9000: it sits at z = <b>1.28</b> (area 0.8997). The value 1.645 cuts off the top 5%, and 2.33 the top 1% — both are often confused with this one.'},
+
+{s:'II', n:'Q8',
+ q:'IQ scores are normally distributed with μ = 100 and σ = 15. What percentage of people score between 85 and 130?',
+ o:['81.9%','77.5%','84.0%','95.0%'], a:0,
+ x:'z = (85 − 100)/15 = −1.00 and z = (130 − 100)/15 = +2.00. Table A gives areas 0.1587 and 0.9772, so the area between them is 0.9772 − 0.1587 = <b>0.8185 ≈ 81.9%</b>. Subtracting the two left-hand areas is the whole technique for a “between” question.'},
+
+{s:'II', n:'Q9',
+ q:'What is the area under the standard normal curve for −0.75 ≤ Z ≤ 1.25?',
+ o:['0.6678','0.4441','0.8944','0.2266'], a:0,
+ x:'P(Z ≤ 1.25) = 0.8944 and P(Z ≤ −0.75) = 0.2266. The area between is 0.8944 − 0.2266 = <b>0.6678</b>. The two distractors 0.8944 and 0.2266 are the individual table entries — reported on their own they answer a different question.'},
+
+{s:'II', n:'Q10',
+ q:'Scores on an entrance test are normally distributed with μ = 500 and σ = 100. A university admits only the top 5%. What is the lowest score that still gets in?',
+ o:['664.5','595.0','660.0','580.0'], a:0,
+ x:'The top 5% begins where 95% lies below, and that is z = <b>1.645</b>. Converting back: X = μ + zσ = 500 + 1.645(100) = <b>664.5</b>. Note the direction of travel — this question gives you the area and asks for the score, so the table is read <em>inwards</em> first.'},
+
+{s:'II', n:'Q11',
+ q:'Student A scores 78 on a test with μ = 70 and σ = 8. Student B scores 65 on a different test with μ = 60 and σ = 4. Who performed better relative to their own group?',
+ o:['Student B — z = 1.25 against Student A’s z = 1.00',
+    'Student A — the raw score of 78 is higher',
+    'They performed equally well',
+    'It cannot be decided without the sample sizes'], a:0,
+ x:'z<sub>A</sub> = (78 − 70)/8 = <b>1.00</b>; z<sub>B</sub> = (65 − 60)/4 = <b>1.25</b>. B sits further above his own mean in standard-deviation units. Comparing raw scores across different scales is meaningless — turning both into z-scores is exactly what makes them comparable.'},
+
+/* -------------------------------------------------------------- SECTION III */
+{s:'III', n:'Q12',
+ q:'A researcher reports a Pearson correlation of r = −0.85 between hours of screen time before bed and hours slept. Which interpretation is correct?',
+ o:['There is a strong negative linear relationship: more screen time goes with less sleep in this sample',
+    'Screen time causes people to sleep less',
+    '85% of people who use screens sleep badly',
+    'The relationship is weak, because the correlation is negative'], a:0,
+ x:'The <b>sign</b> gives the direction and the <b>size</b> gives the strength — a negative r is not a weak r. And a correlation, however strong, is not evidence of causation: these data are observational.'},
+
+{s:'III', n:'Q13',
+ q:'Two variables correlate at r = 0.60. What proportion of the variance in one variable is explained by the other?',
+ o:['0.36','0.60','0.30','0.77'], a:0,
+ x:'r² = 0.60² = <b>0.36</b>, so 36% of the variance is shared. Notice how much smaller that is than the correlation itself — an r of 0.6 sounds substantial, but it leaves nearly two-thirds of the variance unexplained.'},
+
+{s:'III', n:'Q14',
+ q:'Across a summer, ice-cream sales and drowning incidents correlate strongly and positively. What is the most accurate conclusion?',
+ o:['A third variable — hot weather — plausibly drives both, so the association is not evidence that one causes the other',
+    'Eating ice cream increases the risk of drowning',
+    'The correlation must be a calculation error',
+    'Drowning incidents cause people to buy ice cream'], a:0,
+ x:'This is the classic <b>lurking variable</b>. Temperature raises both ice-cream sales and the number of people swimming, producing a correlation between two things with no direct link at all. Ruling out alternative explanations like this is one of the three conditions for a causal claim.'},
+
+{s:'III', n:'Q15',
+ q:'For a variable to act as a confounder, spoiling a causal attribution, what must be true?',
+ o:['It covaries with both the independent and the dependent variable',
+    'It covaries with the independent variable but not with the dependent variable',
+    'It covaries with the dependent variable but not with the independent variable',
+    'It varies with neither'], a:0,
+ x:'A confounder has to be linked to <b>both</b> ends. If it relates only to the IV it cannot affect the outcome; if only to the DV it is just extra noise spread evenly across the conditions. Only a variable tangled with both can masquerade as the effect you are claiming.'},
+
+{s:'III', n:'Q16',
+ q:'A researcher tests a new mindfulness app by giving it to 80 volunteers and measuring stress before and after. There is no control group. What is the main problem?',
+ o:['Any improvement could be due to the passage of time, practice or placebo rather than the app',
+    'The sample is too small to analyse',
+    'Stress cannot be measured quantitatively',
+    'A within-subjects design is never valid'], a:0,
+ x:'Without a comparison group there is <b>nothing to compare the change against</b>. People often improve anyway — regression to the mean, the expectation of benefit, simply more time. A control group is what lets you attribute the change to the app rather than to the calendar.'},
+
+{s:'III', n:'Q17',
+ q:'To sample Dutch psychology students, a researcher divides the population by university, then draws a simple random sample of students within each university. What sampling method is this?',
+ o:['Stratified random sampling','Multi-stage sampling','Cluster sampling','Convenience sampling'], a:0,
+ x:'The population is split into <b>strata</b> (universities) and a random sample is taken <em>within every stratum</em>. Multi-stage sampling would first sample some universities and ignore the rest; cluster sampling would take whole universities as units. Sampling within all of them is what makes it stratified.'},
+
+{s:'III', n:'Q18',
+ q:'In a study of a new painkiller, neither the patients nor the doctors assessing them know who received the drug and who received the placebo. This design is:',
+ o:['Double-blind','Single-blind','Matched-pairs','Observational'], a:0,
+ x:'<b>Two</b> parties are kept unaware — participants and assessors — hence “double”. It protects against both the placebo effect and the assessor’s expectations leaking into the ratings. Single-blind keeps only the participants unaware.'},
+
+{s:'III', n:'Q19',
+ q:'Twenty participants each complete a memory task under quiet, music and noise conditions. What kind of design is this, and what does it require?',
+ o:['Within-subjects — and it needs counterbalancing, because order effects would otherwise be confounded with condition',
+    'Between-subjects — and it needs random assignment to the three groups',
+    'Correlational — nothing is manipulated',
+    'Matched-pairs — participants are paired on memory ability'], a:0,
+ x:'Every participant does <b>all three</b> conditions, which makes it within-subjects. The gain is that individual differences are controlled; the cost is practice and fatigue, which is exactly what counterbalancing the order of conditions is for.'},
+
+{s:'III', n:'Q20',
+ q:'A study reports that children who attend preschool score higher on reading at age 8. Preschool attendance was not assigned — parents chose it. What is the strongest objection to a causal reading?',
+ o:['Families who choose preschool may differ systematically in income, education and home environment',
+    'Reading scores are ordinal and cannot be analysed',
+    'The sample is observational, so no statistics can be computed',
+    'Age 8 is too late to measure reading'], a:0,
+ x:'This is <b>self-selection</b>. The groups were formed by the families themselves, so they differ in more ways than preschool alone — and any of those differences could produce the reading gap. Random assignment is the device that removes this objection, and it was not used.'},
+
+{s:'III', n:'Q21',
+ q:'In an experiment on caffeine and reaction time, participants are given either 200 mg of caffeine or a placebo, and their reaction times are recorded. Identify the variables.',
+ o:['IV = caffeine or placebo; DV = reaction time',
+    'IV = reaction time; DV = caffeine or placebo',
+    'IV = the 200 mg dose; DV = the placebo',
+    'Both are dependent variables'], a:0,
+ x:'The <b>IV</b> is what the researcher sets — which substance a participant receives. The <b>DV</b> is what is measured as a result — reaction time. A quick check: the IV comes first in time and is under the researcher’s control.'},
+
+/* --------------------------------------------------------------- SECTION IV */
+{s:'IV', n:'Q22',
+ q:'Two events have P(A) = 0.40, P(B) = 0.30 and P(A and B) = 0.12. What is P(A or B)?',
+ o:['0.58','0.70','0.12','0.82'], a:0,
+ x:'P(A or B) = P(A) + P(B) − P(A and B) = 0.40 + 0.30 − 0.12 = <b>0.58</b>. The subtraction stops the overlap being counted twice. (0.70 is the answer you would get by treating the events as disjoint, which they are not — and since 0.4 × 0.3 = 0.12, these two are in fact <em>independent</em>.)'},
+
+{s:'IV', n:'Q23',
+ q:'A random variable X takes the values 0, 1 and 2 with probabilities 0.5, 0.3 and 0.2. What is the variance of X?',
+ o:['0.61','0.70','1.10','0.49'], a:0,
+ x:'E(X) = 0(0.5) + 1(0.3) + 2(0.2) = <b>0.7</b>. E(X²) = 0(0.5) + 1(0.3) + 4(0.2) = <b>1.1</b>. Var(X) = E(X²) − [E(X)]² = 1.1 − 0.49 = <b>0.61</b>. The distractors are the two ingredients and the mean itself.'},
+
+{s:'IV', n:'Q24',
+ q:'Each of four independent machines fails on any given day with probability 0.20. What is the probability that <em>at least one</em> fails today?',
+ o:['0.59','0.80','0.41','0.20'], a:0,
+ x:'“At least one” is easiest through its opposite: P(none fails) = 0.80⁴ = 0.4096, so P(at least one) = 1 − 0.4096 = <b>0.5904 ≈ 0.59</b>. Adding 0.2 four times is wrong — probabilities only add for <em>disjoint</em> events, and these can fail together.'},
+
+{s:'IV', n:'Q25',
+ q:'Of 60 first-year students, 45 own a car and 15 do not. Of 40 third-year students, 34 own a car and 6 do not. A student is chosen at random from all 100. Given that the student owns a car, what is the probability that they are a third-year?',
+ o:['0.43','0.34','0.85','0.40'], a:0,
+ x:'Condition on car owners: there are 45 + 34 = <b>79</b> of them, and 34 are third-years. P = 34 ÷ 79 = <b>0.43</b>. The trap is 34 ÷ 100 = 0.34, which answers “third-year <em>and</em> owns a car” — a joint probability, not a conditional one. The word “given” tells you which total to divide by.'},
+
+{s:'IV', n:'Q26',
+ q:'For two events, P(A) = 0.5, P(B) = 0.4 and P(A | B) = 0.5. What does this tell you?',
+ o:['A and B are independent — knowing B occurred does not change the probability of A',
+    'A and B are disjoint',
+    'A and B are dependent, because the probabilities differ',
+    'P(A and B) must be 0'], a:0,
+ x:'Independence means <b>P(A | B) = P(A)</b>, and here both are 0.5. Disjoint is a different idea entirely — disjoint events cannot happen together, so P(A | B) would be 0. In fact disjoint events with non-zero probabilities are always <em>dependent</em>.'},
+
+/* ---------------------------------------------------------------- SECTION V */
+{s:'V', n:'Q27',
+ q:'A population of household incomes is strongly right-skewed, with μ = 40,000 and σ = 22,000. A researcher repeatedly draws samples of n = 60 and records each sample mean. What does the sampling distribution of the mean look like?',
+ o:['Approximately normal, centred on 40,000 — by the Central Limit Theorem',
+    'Strongly right-skewed, like the population',
+    'Normal only if the population is normal, so not here',
+    'Uniform between the smallest and largest income'], a:0,
+ x:'The <b>Central Limit Theorem</b> says the sampling distribution of x̄ becomes approximately normal as n grows, <em>whatever</em> the shape of the population. With n = 60 that approximation is good. Note what does not change: the centre stays at μ.'},
+
+{s:'V', n:'Q28',
+ q:'A population has σ = 20. What is the standard error of the mean for a simple random sample of n = 64?',
+ o:['2.5','20','0.31','1.6'], a:0,
+ x:'SE = σ ÷ √n = 20 ÷ 8 = <b>2.5</b>. The SD of the population stays 20 no matter how many people you sample — it is the spread of the <em>sample mean</em> that shrinks.'},
+
+{s:'V', n:'Q29',
+ q:'Scores are normally distributed with μ = 50 and σ = 20. What is the probability that a sample of n = 64 has a mean of 53 or higher?',
+ o:['0.12','0.44','0.88','0.06'], a:0,
+ x:'SE = 20 ÷ 8 = 2.5, so z = (53 − 50) ÷ 2.5 = <b>1.20</b>. Table A gives P(Z ≤ 1.20) = 0.8849, so the upper tail is 1 − 0.8849 = <b>0.1151 ≈ 0.12</b>. Using σ = 20 instead of the SE would give z = 0.15 and a wildly different answer — the divisor is the whole point.'},
+
+{s:'V', n:'Q30',
+ q:'A researcher quadruples the sample size, from n = 25 to n = 100, keeping everything else the same. What happens to the standard error of the mean?',
+ o:['It halves','It quarters','It doubles','It stays the same'], a:0,
+ x:'SE divides by <b>√n</b>, and √100 ÷ √25 = 10 ÷ 5 = 2 — so four times the data buys you half the wobble. This diminishing return is why sample-size calculations get expensive: halving the margin of error again would need 400 participants.'},
+
+/* --------------------------------------------------------------- SECTION VI */
+{s:'VI', n:'Q31',
+ q:'A two-tailed test returns p = 0.03 with α = 0.05. Which statement is correct?',
+ o:['Reject H₀ — data this extreme would occur only 3% of the time if H₀ were true',
+    'Accept H₀, because 0.03 is a small number',
+    'The probability that H₀ is true is 0.03',
+    'The result proves the alternative hypothesis'], a:0,
+ x:'p ≤ α means <b>reject H₀</b>. The p-value is computed <em>assuming H₀ is true</em>, so it is never the probability that H₀ is true — and nothing in statistics is ever proven.'},
+
+{s:'VI', n:'Q32',
+ q:'A researcher fails to reject H₀ when in reality the alternative is true. What has happened, and what is the probability of it?',
+ o:['A Type II error, with probability β — and power is 1 − β',
+    'A Type I error, with probability α',
+    'A Type II error, with probability α',
+    'No error — failing to reject is always safe'], a:0,
+ x:'Missing a real effect is a <b>Type II</b> error. Its probability is β, and <b>power = 1 − β</b> is the chance of catching the effect. Small samples are the usual culprit — which is why “not significant” never means “nothing is there”.'},
+
+{s:'VI', n:'Q33',
+ q:'A 95% confidence interval for a population mean is reported as 80 ± 5.88, from a sample of n = 64 with known σ = 24. Which value of z* was used?',
+ o:['1.96','1.645','2.576','1.28'], a:0,
+ x:'SE = 24 ÷ 8 = 3, and the margin of error is z* × SE, so z* = 5.88 ÷ 3 = <b>1.96</b> — the 95% value. Reading the margin of error backwards like this is a standard exam move, so practise it in both directions.'},
+
+{s:'VI', n:'Q34',
+ q:'A two-tailed t-test with n = 25 produces t = 2.60. Using the t-table (df = 24: 2.492 at one-tail .01, 2.797 at one-tail .005), what can you say about the p-value?',
+ o:['0.01 &lt; p &lt; 0.02','0.005 &lt; p &lt; 0.01','0.02 &lt; p &lt; 0.05','p &gt; 0.05'], a:0,
+ x:'df = n − 1 = 24. The observed 2.60 falls between 2.492 and 2.797, so the <b>one-tailed</b> p is between .005 and .01. The test is two-tailed, so double both bounds: <b>.01 &lt; p &lt; .02</b>. Forgetting to double is the classic slip here.'},
+
+{s:'VI', n:'Q35',
+ q:'Which change would make a confidence interval for a mean <em>narrower</em>, everything else being equal?',
+ o:['Increasing the sample size','Increasing the confidence level from 95% to 99%',
+    'Increasing the population standard deviation','Using a two-tailed rather than a one-tailed test'], a:0,
+ x:'Width is driven by <b>z* × σ ÷ √n</b>. More data shrinks the interval; more confidence widens it (z* rises from 1.96 to 2.576); more variability widens it. Only extra data buys precision without giving up confidence.'},
+
+{s:'VI', n:'Q36',
+ q:'Which statement about statistical power is FALSE, all else being equal?',
+ o:['Power increases when the population standard deviation increases',
+    'Power increases when the sample size increases',
+    'Power increases when α is raised from .01 to .05',
+    'Power increases when the true effect is larger'], a:0,
+ x:'More variability means more noise to hear the signal through, so power <b>falls</b>. The other three all raise it: more data, a more generous significance level, or a bigger real effect. Note the trade-off in the third — raising α buys power at the cost of more Type I errors.'},
+
+/* -------------------------------------------------------------- SECTION VII */
+{s:'VII', n:'Q37',
+ q:'With n = 20,000 participants, a study finds a statistically significant correlation of r = 0.03 between handedness score and exam marks (p &lt; .01). What is the appropriate conclusion?',
+ o:['The result is statistically significant but of almost no practical importance — r² is about 0.001',
+    'Handedness is an important predictor of exam marks',
+    'The finding must be a calculation error, since r is so small',
+    'A large sample proves the relationship is causal'], a:0,
+ x:'A large enough sample makes even a trivial effect significant, because the standard error shrinks towards zero. <b>Significance answers “is it there?”, not “does it matter?”</b> — r² ≈ 0.0009 means about one-tenth of one percent of shared variance.'},
+
+{s:'VII', n:'Q38',
+ q:'A researcher expects a new drug to <em>raise</em> scores, but runs a two-tailed test anyway. Why is that reasonable?',
+ o:['A two-tailed test can still detect an effect in the unexpected direction, and it is the conventional, more conservative choice',
+    'A two-tailed test gives a smaller p-value, so it is easier to find significance',
+    'One-tailed tests are not permitted in psychology',
+    'Two-tailed tests do not require an alternative hypothesis'], a:0,
+ x:'If the drug turned out to <em>lower</em> scores, a one-tailed test pointing upwards could not report it. Two-sided is the default; go one-sided only when a change in the other direction is impossible. And the two-tailed p is the <b>larger</b> one, so it is the harder test, not the easier one.'},
+
+{s:'VII', n:'Q39',
+ q:'A 95% confidence interval for a mean difference runs from −1.2 to 4.8. What follows?',
+ o:['The difference is not significant at α = .05, because 0 lies inside the interval',
+    'The difference is significant, because most of the interval is positive',
+    'The true difference is 1.8, the midpoint',
+    'The interval is too wide to interpret'], a:0,
+ x:'For a <b>difference</b>, the no-effect value is <b>0</b>. An interval containing 0 leaves “no difference” plausible, and a 95% interval always agrees with a two-tailed test at α = .05. The midpoint is the best <em>estimate</em>, but it is not the truth.'},
+
+{s:'VII', n:'Q40',
+ q:'A researcher runs twenty separate tests at α = .05 on the same data set and finds one significant result. Why should this be treated with caution?',
+ o:['With twenty tests at α = .05, about one false positive is expected even when nothing is going on',
+    'Twenty tests is too few to be reliable',
+    'The significance level should have been raised to .10',
+    'Running several tests makes each one more powerful'], a:0,
+ x:'α = .05 means a 5% chance of a false alarm <em>per test</em>. Across twenty independent tests you expect 20 × 0.05 = <b>one</b> spurious “finding”. This is the multiple-comparisons problem — and it is the same reason Lecture 2 rejects running a separate z-test on each M&amp;M colour in favour of one chi-square.'}
+
+];
+
+
+(function(){
+'use strict';
+
+var SECTIONS = {
+  I:   'Measurement &amp; Descriptive Statistics',
+  II:  'Normal Distribution &amp; Z-Scores',
+  III: 'Correlation, Variables &amp; Research Design',
+  IV:  'Probability &amp; Probability Distributions',
+  V:   'Sampling Distributions &amp; Inference',
+  VI:  'Hypothesis Testing &amp; Confidence Intervals',
+  VII: 'Additional Questions'
+};
+
+var LET = ['A','B','C','D'];
+var answered = {};   // index -> chosen display position
+var correct  = {};   // index -> boolean
+var onlyWrong = false;
+
+var list = document.getElementById('list');
+var done = document.getElementById('done');
+
+function stats(){
+  var a = Object.keys(answered).length, c = 0;
+  Object.keys(correct).forEach(function(k){ if (correct[k]) c++; });
+  return {answered:a, correct:c, total:EXAM.length};
+}
+
+function board(){
+  var s = stats();
+  document.getElementById('sc').textContent  = s.correct + ' / ' + s.answered;
+  document.getElementById('rem').textContent = s.total - s.answered;
+  document.getElementById('bar').style.width = Math.round(100 * s.answered / s.total) + '%';
+  document.getElementById('barlab').textContent =
+    s.answered === 0 ? 'Nothing answered yet'
+      : s.answered + ' of ' + s.total + ' answered · ' +
+        Math.round(100 * s.correct / s.answered) + '% right so far';
+  document.getElementById('btnWrong').classList.toggle('on', onlyWrong);
+
+  if (s.answered === s.total) {
+    var per = {};
+    EXAM.forEach(function(m, i){
+      if (!per[m.s]) per[m.s] = [0, 0];
+      per[m.s][1]++;
+      if (correct[i]) per[m.s][0]++;
+    });
+    var rows = Object.keys(SECTIONS).filter(function(k){ return per[k]; }).map(function(k){
+      return '<tr><td>' + k + ' · ' + SECTIONS[k] + '</td><td>' + per[k][0] + ' / ' + per[k][1] + '</td></tr>';
+    }).join('');
+    var pct = Math.round(100 * s.correct / s.total);
+    done.innerHTML = '<div class="dt">' + s.correct + ' / ' + s.total + '</div>'
+      + '<div class="dd">' + pct + '% — where the marks went:</div>'
+      + '<table>' + rows + '</table>';
+    done.classList.add('show');
+  } else {
+    done.classList.remove('show');
+  }
+}
+
+function draw(){
+  list.innerHTML = '';
+  var shownSection = null;
+
+  EXAM.forEach(function(m, i){
+    if (onlyWrong && !(answered[i] !== undefined && !correct[i])) return;
+
+    if (m.s !== shownSection) {
+      shownSection = m.s;
+      var h = document.createElement('div');
+      h.className = 'sec';
+      h.innerHTML = '<div class="sn">Section ' + m.s + '</div>'
+                  + '<div class="st">' + SECTIONS[m.s] + '</div><div class="sr"></div>';
+      list.appendChild(h);
+    }
+
+    var d = document.createElement('div');
+    d.className = 'q';
+
+    /* rotate the option order so the right answer is not always first */
+    var rot = i % m.o.length;
+    var order = m.o.map(function(_, k){ return (k + m.o.length - rot) % m.o.length; });
+    var ans = order.indexOf(m.a);
+
+    var opts = '';
+    order.forEach(function(src, k){
+      opts += '<button class="opt" data-k="' + k + '"><span class="ol">' + LET[k] + '</span>'
+            + '<span>' + m.o[src] + '</span></button>';
+    });
+
+    d.innerHTML = '<div class="qh"><span class="qn">' + m.n + '</span>'
+                + '<span class="qtag">Section ' + m.s + '</span></div>'
+                + '<div class="qq">' + m.q + '</div>'
+                + '<div class="opts">' + opts + '</div>'
+                + '<div class="expl"><div class="el">Why</div>' + m.x + '</div>';
+
+    var btns = [].slice.call(d.querySelectorAll('.opt'));
+    function settle(picked){
+      btns.forEach(function(x, j){
+        x.disabled = true;
+        if (j === ans) x.classList.add('correct');
+      });
+      if (picked !== null && picked !== ans) btns[picked].classList.add('wrong');
+      d.querySelector('.expl').classList.add('show');
+    }
+    if (answered[i] !== undefined) {
+      settle(answered[i]);
+    } else {
+      btns.forEach(function(b){
+        b.addEventListener('click', function(){
+          var k = +b.dataset.k;
+          answered[i] = k;
+          correct[i] = (k === ans);
+          settle(k);
+          board();
+        });
+      });
+    }
+    list.appendChild(d);
+  });
+
+  if (!list.children.length) {
+    list.innerHTML = '<div class="q"><div class="qq" style="margin:0">'
+      + 'No mistakes to review yet.</div></div>';
+  }
+}
+
+document.getElementById('btnReset').addEventListener('click', function(){
+  answered = {}; correct = {}; onlyWrong = false;
+  draw(); board();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+document.getElementById('btnWrong').addEventListener('click', function(){
+  onlyWrong = !onlyWrong;
+  draw(); board();
+});
+
+draw(); board();
+})();
+</script>
+</body>
+</html>
